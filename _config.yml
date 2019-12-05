@@ -31,7 +31,7 @@ github_username:  auriane81
 <<<<<<< HEAD
 theme: jekyll-theme-architect
 =======
-theme: minima
+theme: jekyll-theme-architect
 >>>>>>> 3cc7863933bd8e5cff1434140f5bcb6d8a097732
 plugins:
   - jekyll-feed
