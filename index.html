@@ -328,10 +328,7 @@
             Then, we hope that two products that are connected by a low-weight edge are appreciated by the same users
             and share some characteristis. Thus, it should make sense to recommend, instead of a product deemed "unhealthy",
              a "healthy" product of the same aisle and with a very short path from the "unhealthy" product.</p>
-          <p class="lead mb-5"> As an example of recommendation, our algorithm ...
-           The recommended product was selected among the 10 closest neighbours of the original product, based on a score
-           taking into account distance to the original, healthiness, and fidelity (~satisfaction) of consumers.</p>
-
+             
            <p class="lead mb-5">When looking at recommendations for the cluster of "unhealthy" consumers,
              it is worth noticing that many times, an organic product was recommended instead of a non-organic product.</p>
 
@@ -352,14 +349,14 @@
           <p class="lead mb-5"> This project demonstrated the power of data analysis.
             Without any a priori information about product's healthiness, we managed, with rather simple calculations,
             to advise relevant food choices that would increase both the healthiness and the probability that the user is satisfied
-            with this new product. Using homemade healthiness score a,d popularity score and this proximity, we obtained rather
+            with the recommended product. Using homemade healthiness score and popularity score and this proximity, we obtained rather
             good results without any particularly advanced technology. On average, the gain of healthiness is more than 1.3 (on a scale from -1 to 4).</p>
 
 
-            <p class="lead mb-5"> The limits of this model are linked to the strong assumption we made about user habits.
+            <p class="lead mb-5"> The limits of this model are linked to the strong assumption we made about user habits (which should be valid with such a big dataset)
+              that people's inter-aisles choices are as healthy as their intra-aisle choices.
               Several bad predictions were made on products that are consumed by very few people, which individually have no reason to satisfy the strong assumption.
-              "There is no data like more data" reflects again the easiest and most efficient way to improve our results. T
-              he more users, the more accurate the strong assumption.
+              "There is no data like more data" reflects again the easiest and most efficient way to improve our results. The more users, the more accurate the strong assumption.
               It would increase the reliability of the popularit score. We are here facing the sparsity of the user data
               (each user being a point and each product being a feature). Another important improvement axis would be to add a notion of substituability
               between products, to avoid advising people to replace apples by avocados!</p>
