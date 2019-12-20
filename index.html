@@ -162,10 +162,10 @@
             The risk is that a direct clustering on all available features won't differentiate between healthy and unhealthy consuming users, but rather between other
             criteria (consumers eating more salty or sweet for instance).</p>
 
-            <p class="lead mb-5">Thus, we first hand-selected 14 aisles that were directly linked to healthiness. Then, we applied a Principal Component Analysis, to reduce the numbers of features to cluster on.
-            Suprisingly, the aisles accounting the most for the 4 first principal dimensions were all differential in terms of healthiness.
+            <p class="lead mb-5">Thus, we first hand-selected 14 aisles that were directly linked to healthiness. Then, we applied a Principal Component Analysis,
+              to reduce the numbers of features to cluster on. The aisles accounting the most for the 4 first principal dimensions were all differential in terms of healthiness.
             More precisely, the first three dimensions were respectively led by "fresh fruits", "fresh vegetables" and "packaged vegetables fruits", considered to be healthy.
-            The 4th dimension was led by "soft drinks", more related to unhealthiness. We thus chose to cluster on these 4 principal components.</p>
+            The 4th dimension was led by "soft drinks", more related to unhealthiness. We thus chose to cluster on these 4 dimensions.</p>
 
 
 
@@ -318,8 +318,13 @@
       <div class="row">
         <div class="col-lg-10 mx-auto">
           <h2 class="mb-4">Recommending better products</h2>
-          <p class="lead mb-5">Before answering the previously defined questions, let's have a look at meaningful general insights on the dataset. Such insights
-          provide a good overview on users' habits.</p>
+          <p class="lead mb-5">We want to recommend "healthier" products to users whom we consider
+            as having a rather unhealthy consumption habits. To do this, we made for each aisle a graph of
+            products where two products that are bought by the same users are connected by an edge of low weight:
+            the lower the weight, the more users buy both products (and the more they buy each product).
+            Then, we hope that two products that are connected by a low-weight edge are appreciated by the same users
+            and share some characteristis. Thus, it should make sense to recommend, instead of a product deemed "unhealthy",
+             a product of the same aisle and with a very short path from the "unhealthy" product.</p>
         </div>
         <div class="col-lg-10 mx-auto">
           <h4 class="mb-4">When do people commonly order?</h4>
