@@ -44,7 +44,10 @@
         <a class="js-scroll-trigger" href="#parag2">Users clustering</a>
       </li>
       <li class="sidebar-nav-item">
-        <a class="js-scroll-trigger" href="#parag3">Appreciation score</a>
+        <a class="js-scroll-trigger" href="#parag3">Popularity score</a>
+      </li>
+      <li class="sidebar-nav-item">
+        <a class="js-scroll-trigger" href="#parag4">Recommending better products</a>
       </li>
     </ul>
   </nav>
@@ -60,7 +63,9 @@
     </div>
     <div class="overlay"></div>
   </header>
-
+  <div class="container text-center my-auto">
+    <p class="lead mg-5"> <i> Photography of an Addax (Addax nasomaculatus) at the Louisville Zoo, eating healthy grass.</i> <a href="https://fr.wikipedia.org/wiki/Fichier:Addax_at_the_Louisville_Zoo.jpg">Source here</a>  </p>
+  </div>
   <!-- Approach -->
   <section class="content-section bg-light" id="approach">
     <div class="container text-justify">
@@ -129,8 +134,8 @@
         <div class="col-lg-10 mx-auto">
           <h4 class="mb-4">How many times do people order at Instacart (i.e. : are they faithful?)?</h4>
             <img src="./img/order_numbers.png" alt="Number of orders per user" width="1000">
-          <p class="lead mb-5"> Most of the consumers only order 4 times. None of them order less : we can hypothesize that we were provided
-            with a dataset containing only part of user data, excluding too few faithful ones.</p>
+          <p class="lead mb-5"> Most of the consumers only order 4 times. None of them order less : we concluded that we were provided
+            with a dataset containing only part of the user data, excluding too few faithful ones.</p>
         </div>
         <div class="col-lg-10 mx-auto">
           <h4 class="mb-4">How many products can one find in the Instacart dataset?</h4>
@@ -157,7 +162,7 @@
             The risk is that a direct clustering on all available features won't differentiate between healthy and unhealthy consuming users, but rather between other
             criteria (consumers eating more salty or sweet for instance).</p>
 
-            <p class="lead mb-5">Thus, we first applied a Principal Component Analysis, to reduce the numbers of features to cluster on.
+            <p class="lead mb-5">Thus, we first hand-selected 14 aisles that were directly linked to healthiness. Then, we applied a Principal Component Analysis, to reduce the numbers of features to cluster on.
             Suprisingly, the aisles accounting the most for the 4 first principal dimensions were all differential in terms of healthiness.
             More precisely, the first three dimensions were respectively led by "fresh fruits", "fresh vegetables" and "packaged vegetables fruits", considered to be healthy.
             The 4th dimension was led by "soft drinks", more related to unhealthiness. We thus chose to cluster on these 4 principal components.</p>
@@ -219,14 +224,14 @@
 
           <p class="lead mb-5">
           Defined so, the healthiness score may however be irrelevant when a product is only consumed by very few people, because it induces a great variance in score evaluation.
-          To deal with this limitation,  we chose to also take into account a product's popularity by deriving an Appreciation score for each product.
+          To deal with this limitation,  we chose to also take into account a product's popularity by deriving an Popularity score for each product.
            </p>
 
         </div>
       </div>
     </div>
     <div class="container text-center">
-      <a class="btn btn-dark btn-xl js-scroll-trigger" href="#parag3">Appreciation score</a>
+      <a class="btn btn-dark btn-xl js-scroll-trigger" href="#parag3">Popularity score</a>
     </div>
   </section>
 
@@ -234,13 +239,113 @@
   <!-- Paragraph3 -->
   <section class="content-section bg-primary text-white" id="parag3">
     <div class="container text-justify">
-      <h2 class="mb-4">Appreciation score</h2>
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <h2 class="mb-4">Popularity score</h2>
+
+          <p class="lead mb-5">A first way to quantify such a popularity is to look at the number of distinct consumers ordering a product.</p>
+          <img src="./img/popular_products.png" alt="Number of distinct consumers per product" width=1000>
+
+          <p class="lead mb-5">Some products have been consumed by very few people, sometimes 0,
+            so we have no (reliable) information about their scores. A quick exploration of these products show that they are not products we would
+            advise, because they are too specific. Our decision for these products is to give them a score of 0.</p>
+
+          <p class="lead mb-5"> To gauge the popularity of a product, we chose to infer from our dataset the average number of times it is re-bought.
+            Nevertheless, this raw score would not be meaningful enough and we have to take the consumer's consumption habits into account, as shown by the following example:</p>
+
+          <p class="lead mb-5">Imagine a consumer, Ada, buying everytime the same set of products, each of them 10 times, except one product,
+            let's say "chicory and ham", which wasn't so good, and she bought it only 4 times.
+            Now imagine a second consumer Robert, who doesn't like consuming always the same products, and tries to have a very varied consumption.
+            He bought once each product, except one, say "goat cheese", which he loved and bought 3 times. If Ada and Robert are the only consumers of the dataset,
+            "chicory and ham" would have a better popularity score (that is 4) than "goat cheese" (score of 3). We don't want this to happen!</p>
+
+          <p class="lead mb-5"> Thus, we first have to study carefully users' re-ordering habits!</p>
+
+        </div>
+
+        <div class="col-lg-10 mx-auto">
+          <h4 class="mb-4">Users habits</h4>
+          <img src="./img/reordering_1.png" alt="Reordering of products <=5">
+
+                              <img src="./img/reordering_2.png" alt="Reordering of products >=5">
+
+          <p class="lead mb-5"> Most of the users consume on average less than one time a product. We observe big peaks at 0, 1/2, 1 and 2,
+            which must correspond to users who consumed rarely. A further result is that consumers who reorder the most on average are among the greatest consumers, as shown
+          by the graph below.</p>
+
+          <img src="./img/user_habits.png" alt="User habits in terms of reordering">
+
+
+          <p class="lead mb-5"> Most of the users only ordered a few times, and small above a certain number of orders. The average re-ordering can't be too low,
+             which can be explained by the fact that people who buy so much have strong consumption habits.</p>
+
+            <p class="lead mb-5"> As a final metrics for the popularity score, we thus still considered the re-ordering rate, but chose to normalize
+               by the average fidelity of each user (the average time he or she consumes each product). The greater this score is, the more
+               the product is likely to be re-bought. The absolute value of the score is difficult to interpret, but we can compare different scores quite safely.</p>
+        </div>
+        <div class="col-lg-10 mx-auto">
+          <h4 class="mb-4">Popularity score insights</h4>
+            <p class="lead mb-5"> Once defined, let's look at the distribution of the popularity score.</p>
+            <img src="./img/fidelity_1.png" alt="Popularity score 1">
+            <img src="./img/fidelity_2.png" alt="Popularity score 2">
+            <img src="./img/fidelity_3.png" alt="Popularity score 3">
+
+
+
+          <p class="lead mb-5">We observe that most of the values (whose weighted average over consumptions should be one !) are in the interval [0, 2]
+            with a great peak at 0. Let's confront those values to the reliability of each score, that corresponds to the number of times the product was bought.</p>
+
+            <img src="./img/fidelity_vs_consumption.png" alt="Fidelity vs consumption">
+
+            <p class="lead mb-5"> We can't see a very clear correlation. Nevertheless, we can remark 2 things.
+              <ul class="lead">
+              <li> Most consumed products overall are on average better-liked than others (score greater than 1).</li>
+              <li> A great number of products was only bought once by less than a dozen of users. </li> </p>
+              </ul>
+            <p class="lead mb-5"> We now have, for each product, two scores : a healthiness score and a popularity score. Based on these two,
+            we now aim to recommend "better products" to users.</p>
+        </div>
+      </div>
     </div>
     <div class="container text-center">
+      <a class="btn btn-dark btn-xl js-scroll-trigger" href="#parag4">Recommending better products</a>
     </div>
   </section>
 
-
+  <!-- Paragraph4 -->
+  <section class="content-section bg-light" id="parag4">
+    <div class="container text-justify">
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <h2 class="mb-4">Recommending better products</h2>
+          <p class="lead mb-5">Before answering the previously defined questions, let's have a look at meaningful general insights on the dataset. Such insights
+          provide a good overview on users' habits.</p>
+        </div>
+        <div class="col-lg-10 mx-auto">
+          <h4 class="mb-4">When do people commonly order?</h4>
+          <img src="./img/day_order.png" alt="Repartition of orders per day">
+                                          <img src="./img/hour_order.png" alt="Repartition of orders per hour">
+          <p class="lead mb-5"> As could be expected, people tend to order during working hours (between 8 a.m. and 20 p.m.), and during the weekend.
+        </div>
+        <div class="col-lg-10 mx-auto">
+          <h4 class="mb-4">How many times do people order at Instacart (i.e. : are they faithful?)?</h4>
+            <img src="./img/order_numbers.png" alt="Number of orders per user" width="1000">
+          <p class="lead mb-5"> Most of the consumers only order 4 times. None of them order less : we concluded that we were provided
+            with a dataset containing only part of the user data, excluding too few faithful ones.</p>
+        </div>
+        <div class="col-lg-10 mx-auto">
+          <h4 class="mb-4">How many products can one find in the Instacart dataset?</h4>
+            <img src="./img/products_per_dpt.png" alt="Number of products per department">
+          <p class="lead mb-5"> A large range of products can be found in the Instacart dataset.
+            The classification into departments (further divided in aisles) makes possible the identification of similar products.</p>
+          <p class="lead mb-5"> These first considerations being inferred, let's now move to the more interesting problem of users clustering.</p>
+        </div>
+      </div>
+    </div>
+    <div class="container text-center">
+      <a class="btn btn-dark btn-xl js-scroll-trigger" href="#parag2">Users clustering</a>
+    </div>
+  </section>
   <!-- Footer -->
   <footer class="footer text-center">
     <div class="container">
